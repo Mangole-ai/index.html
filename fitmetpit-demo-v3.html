@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Fit met Pit — Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root {
+  --or:   #E65100;
+  --or2:  #FF6D00;
+  --orbg: #FFF3E0;
+  --bl:   #1A237E;
+  --bl2:  #283593;
+  --bg:   #F4F4F8;
+  --tekst:#1C1C2E;
+  --mid:  #3D4466;
+  --sub:  #5A5F7A;
+  --lijn: #DDE0EC;
+  --r:    18px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;background:#0f0f1a;color:var(--tekst)}
+
+.pg{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;transition:opacity .3s,transform .3s}
+.pg.uit{opacity:0;pointer-events:none;transform:translateY(16px)}
+.pg.in{opacity:1;pointer-events:all;transform:none}
+
+/* SPLASH */
+#splash{background:linear-gradient(160deg,#0f0f1a,#1A237E 50%,#E65100);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+.s-ring{width:78px;height:78px;border-radius:50%;border:3px solid rgba(255,109,0,.3);border-top-color:#FF6D00;animation:spin 1s linear infinite}
+.s-logo{font-family:'Fraunces',serif;font-size:48px;color:#fff;line-height:1}
+.s-logo span{color:#FF8A50}
+.s-sub{color:rgba(255,255,255,.6);font-size:16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* HOME */
+#home{background:var(--bg)}
+.h-hero{background:linear-gradient(145deg,#1A237E,#3949AB);padding:44px 22px 54px;position:relative;overflow:hidden}
+.h-hero::before{content:'';position:absolute;width:260px;height:260px;border-radius:50%;background:var(--or);opacity:.07;top:-70px;right:-60px}
+.logo{font-family:'Fraunces',serif;font-size:28px;color:#fff;position:relative}
+.logo span{color:#FF8A50}
+.logo-sub{color:rgba(255,255,255,.68);font-size:14px;margin-top:3px;position:relative}
+.h-kop{font-family:'Fraunces',serif;color:#fff;font-size:36px;line-height:1.1;margin-top:24px;position:relative}
+.h-kop span{color:#FF8A50}
+.h-sub{color:rgba(255,255,255,.78);font-size:17px;line-height:1.6;margin-top:10px;position:relative}
+
+.h-grid{padding:20px 16px;display:flex;flex-direction:column;gap:13px}
+.h-btn{border:none;border-radius:var(--r);padding:20px 18px;cursor:pointer;display:flex;align-items:center;gap:15px;box-shadow:0 4px 16px rgba(0,0,0,.12);transition:transform .18s;text-align:left}
+.h-btn:active{transform:scale(.97)}
+.h-btn.or{background:linear-gradient(135deg,#E65100,#FF6D00)}
+.h-btn.bl{background:linear-gradient(135deg,#1A237E,#3949AB)}
+.h-btn-ico{font-size:32px;flex-shrink:0}
+.h-btn-t{font-size:18px;font-weight:700;color:#fff;line-height:1.2}
+.h-btn-s{font-size:14px;color:rgba(255,255,255,.78);margin-top:3px}
+.h-btn-p{margin-left:auto;font-size:22px;color:rgba(255,255,255,.5);flex-shrink:0}
+.h-note{margin:0 16px 28px;background:#fff;border-radius:14px;padding:15px 16px;display:flex;gap:11px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.h-note-t{font-size:15px;color:var(--mid);line-height:1.55}
+.h-note-t strong{color:var(--tekst)}
+
+/* NAV */
+.nav{background:var(--bl);color:#fff;padding:12px 15px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50;box-shadow:0 2px 14px rgba(26,35,126,.3)}
+.nav-back{background:rgba(255,255,255,.15);border:none;color:#fff;width:48px;height:48px;border-radius:12px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
+.nav-back:active{background:rgba(255,255,255,.3)}
+.nav-logo{font-family:'Fraunces',serif;font-size:20px}
+.nav-logo span{color:#FF8A50}
+.nav-pg{font-size:14px;color:rgba(255,255,255,.72);margin-top:1px}
+
+/* EIGENAAR */
+#eigenaar{background:var(--bg)}
+.e-hero{background:linear-gradient(135deg,#E65100,#FF6D00);padding:26px 20px 34px;position:relative;overflow:hidden}
+.e-hero::after{content:'';position:absolute;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.07);bottom:-45px;right:-35px}
+.e-hero h2{font-family:'Fraunces',serif;color:#fff;font-size:26px;line-height:1.15;position:relative}
+.e-hero p{color:rgba(255,255,255,.88);font-size:16px;margin-top:7px;line-height:1.55;position:relative}
+
+.blok{background:#fff;margin:13px 14px 0;border-radius:var(--r);padding:19px 17px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.blok-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--or);margin-bottom:13px}
+
+.stap-rij{display:flex;gap:11px;align-items:flex-start;margin-bottom:14px}
+.stap-rij:last-child{margin-bottom:0}
+.stap-bol{width:38px;height:38px;border-radius:10px;background:var(--bl);color:#fff;font-weight:900;font-size:17px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stap-tx h4{font-size:16px;font-weight:700;color:var(--tekst);margin-bottom:2px}
+.stap-tx p{font-size:14px;color:var(--mid);line-height:1.5}
+
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--orbg);border-radius:13px;padding:14px;text-align:center}
+.stat-n{font-family:'Fraunces',serif;font-size:30px;color:var(--or);line-height:1}
+.stat-l{font-size:12px;color:var(--tekst);margin-top:4px;line-height:1.4;font-weight:500}
+
+.qr-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.qr-k{background:var(--bg);border-radius:12px;padding:13px 10px;text-align:center;cursor:pointer;border:2px solid transparent;transition:all .2s}
+.qr-k:active{transform:scale(.96);border-color:var(--or)}
+.qr-k-ico{font-size:20px;margin-bottom:6px}
+.qr-naam{font-size:12px;font-weight:700;color:var(--bl);margin-top:6px}
+.qr-url{font-size:10px;color:var(--sub);margin-top:2px;word-break:break-all}
+.print-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--bl);color:#fff;border:none;border-radius:12px;padding:14px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;width:100%;margin-top:12px}
+
+.prijs{background:linear-gradient(135deg,#1A237E,#283593);border-radius:var(--r);margin:13px 14px;color:#fff;padding:20px 18px;box-shadow:0 4px 16px rgba(26,35,126,.22)}
+.prijs h3{font-family:'Fraunces',serif;font-size:22px}
+.prijs-n{font-family:'Fraunces',serif;font-size:50px;color:#FF8A50;line-height:1;margin:5px 0 2px}
+.prijs-s{font-size:13px;opacity:.72}
+.prijs-lst{margin-top:13px;display:flex;flex-direction:column;gap:8px}
+.prijs-item{display:flex;align-items:center;gap:9px;font-size:15px}
+.prijs-ck{background:rgba(255,255,255,.13);width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.cta{display:flex;align-items:center;justify-content:center;gap:9px;background:var(--or);color:#fff;border:none;border-radius:13px;padding:17px;font-family:'DM Sans',sans-serif;font-size:17px;font-weight:700;cursor:pointer;width:calc(100% - 28px);margin:0 14px 28px;box-shadow:0 4px 14px rgba(230,81,0,.3);transition:transform .18s}
+.cta:active{transform:scale(.97)}
+
+/* MACHINES */
+#machines{background:var(--bg)}
+.m-hero{background:linear-gradient(145deg,#1A237E,#3949AB);padding:24px 20px 32px;position:relative;overflow:hidden}
+.m-hero::before{content:'🏋️';font-size:100px;position:absolute;right:-10px;bottom:-15px;opacity:.07;line-height:1}
+.m-hero h2{font-family:'Fraunces',serif;color:#fff;font-size:24px;line-height:1.2;position:relative}
+.m-hero p{color:rgba(255,255,255,.8);font-size:16px;margin-top:7px;line-height:1.55;position:relative}
+
+.m-grid{padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.m-kaart{background:#fff;border-radius:var(--r);padding:18px 14px 16px;cursor:pointer;border:2px solid transparent;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.07);text-align:center;display:flex;flex-direction:column;align-items:center;gap:7px}
+.m-kaart:active{transform:scale(.97);border-color:var(--or)}
+.m-ico{width:62px;height:62px;border-radius:16px;background:var(--orbg);display:flex;align-items:center;justify-content:center;font-size:28px}
+.m-naam{font-size:17px;font-weight:700;color:var(--bl);line-height:1.2}
+.m-spier{font-size:14px;color:var(--mid)}
+.m-scan{font-size:12px;color:var(--or);font-weight:700;margin-top:2px}
+
+/* DETAIL */
+#detail{background:var(--bg)}
+.d-hero{background:linear-gradient(145deg,#1A237E,#283593);padding:20px 20px 28px;position:relative;overflow:hidden}
+.d-hero::after{content:'';position:absolute;width:140px;height:140px;border-radius:50%;background:var(--or);opacity:.09;bottom:-40px;right:-20px}
+.d-ico{font-size:50px;margin-bottom:7px}
+.d-naam{font-family:'Fraunces',serif;color:#fff;font-size:30px;line-height:1.1}
+.d-doel{color:rgba(255,255,255,.82);font-size:17px;margin-top:7px;line-height:1.55;position:relative}
+.d-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.14);border-radius:30px;padding:4px 12px;font-size:13px;color:#fff;margin-top:8px}
+
+/* VIDEO SECTIE */
+.v-blok{background:#fff;margin:13px 14px 0;border-radius:var(--r);overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.v-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--or);padding:15px 17px 10px}
+
+/* YouTube thumbnail click-to-play */
+.yt-thumb{position:relative;width:100%;aspect-ratio:16/9;cursor:pointer;background:#000;display:block;overflow:hidden}
+.yt-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .2s}
+.yt-thumb:active img{opacity:.85}
+.yt-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(0,0,0,.35)}
+.yt-play{width:72px;height:72px;border-radius:50%;background:var(--or);display:flex;align-items:center;justify-content:center;padding-left:4px;box-shadow:0 0 0 0 rgba(230,81,0,.4);animation:pulse 2s infinite}
+.yt-play-ico{font-size:26px;color:#fff}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(230,81,0,.4)}60%{box-shadow:0 0 0 20px rgba(230,81,0,0)}100%{box-shadow:0 0 0 0 rgba(230,81,0,0)}}
+.yt-play-label{color:#fff;font-size:15px;font-weight:600;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.yt-dur{position:absolute;bottom:9px;right:10px;background:rgba(0,0,0,.7);color:#fff;font-size:12px;font-weight:700;padding:2px 7px;border-radius:5px}
+
+/* iframe nadat je klikt */
+.yt-frame{position:relative;width:100%;aspect-ratio:16/9;background:#000}
+.yt-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+
+.v-footer{padding:10px 17px 14px;background:#fff}
+.v-footer-t{font-size:14px;color:var(--mid);display:flex;align-items:center;gap:6px}
+
+/* Stappen & Tips */
+.d-blok{background:#fff;margin:13px 14px 0;border-radius:var(--r);padding:18px 16px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.d-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--or);margin-bottom:13px}
+.stap{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--lijn)}
+.stap:last-child{border-bottom:none;padding-bottom:0}
+.stap-nr{width:36px;height:36px;border-radius:10px;background:var(--bl);color:#fff;font-weight:900;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stap-t{font-size:18px;line-height:1.55;color:var(--tekst);padding-top:7px}
+.tip{display:flex;gap:11px;align-items:flex-start;background:#FFF8F8;border-radius:11px;padding:12px 13px;margin-bottom:9px}
+.tip:last-child{margin-bottom:0}
+.tip-ico{font-size:19px;flex-shrink:0;margin-top:1px}
+.tip-t{font-size:18px;line-height:1.5;color:var(--tekst)}
+
+.hulp{display:flex;align-items:center;justify-content:center;gap:11px;background:var(--bl);color:#fff;border:none;border-radius:15px;padding:20px 20px;font-family:'DM Sans',sans-serif;font-size:20px;font-weight:700;cursor:pointer;width:calc(100% - 28px);margin:13px 14px 28px;box-shadow:0 4px 16px rgba(26,35,126,.26);transition:transform .18s}
+.hulp:active{transform:scale(.97)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1B5E20;color:#fff;padding:12px 20px;border-radius:12px;font-size:16px;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,.2);transition:transform .28s ease;z-index:999;white-space:nowrap}
+.toast.aan{transform:translateX(-50%) translateY(0)}
+
+@keyframes in{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:none}}
+.in-fade{animation:in .36s ease both}
+.in-fade:nth-child(1){animation-delay:.00s}
+.in-fade:nth-child(2){animation-delay:.07s}
+.in-fade:nth-child(3){animation-delay:.14s}
+.in-fade:nth-child(4){animation-delay:.21s}
+.in-fade:nth-child(5){animation-delay:.28s}
+.in-fade:nth-child(6){animation-delay:.35s}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div class="pg in" id="splash">
+  <div class="s-ring"></div>
+  <div class="s-logo">Fit met <span>pit</span></div>
+  <div class="s-sub">Gymgids voor senioren · Eindhoven</div>
+</div>
+
+<!-- HOME -->
+<div class="pg uit" id="home">
+  <div class="h-hero">
+    <div class="logo">Fit met <span>pit</span></div>
+    <div class="logo-sub">Gymgids voor senioren · Eindhoven</div>
+    <div class="h-kop">Scan. Kijk.<br><span>Train veilig.</span></div>
+    <div class="h-sub">QR-code scannen bij het apparaat → instructievideo direct op uw telefoon. Geen app. Geen account.</div>
+  </div>
+  <div class="h-grid">
+    <button class="h-btn or" onclick="ga('eigenaar')">
+      <div class="h-btn-ico">🏢</div>
+      <div><div class="h-btn-t">Voor de gym-eigenaar</div><div class="h-btn-s">Concept · QR-codes · Prijs</div></div>
+      <div class="h-btn-p">›</div>
+    </button>
+    <button class="h-btn bl" onclick="ga('machines')">
+      <div class="h-btn-ico">📱</div>
+      <div><div class="h-btn-t">Senior-ervaring</div><div class="h-btn-s">Wat de senior ziet na het scannen</div></div>
+      <div class="h-btn-p">›</div>
+    </button>
+  </div>
+  <div class="h-note">
+    <div style="font-size:20px;flex-shrink:0">💡</div>
+    <div class="h-note-t"><strong>Dit is een demo.</strong> Tik op "Senior-ervaring" om precies te zien wat een senior ziet na het scannen van de QR-code bij een apparaat.</div>
+  </div>
+</div>
+
+<!-- EIGENAAR -->
+<div class="pg uit" id="eigenaar">
+  <div class="nav">
+    <button class="nav-back" onclick="ga('home')">←</button>
+    <div><div class="nav-logo">Fit met <span>pit</span></div><div class="nav-pg">Voor de gym-eigenaar</div></div>
+  </div>
+  <div class="e-hero">
+    <h2>Uw senioren verdienen betere begeleiding</h2>
+    <p>Fit met pit plaatst QR-codes bij uw apparaten. Senioren scannen die met hun telefoon en zien direct een instructievideo.</p>
+  </div>
+  <div class="blok">
+    <div class="blok-lbl">Hoe het werkt — 3 stappen</div>
+    <div class="stap-rij in-fade"><div class="stap-bol">1</div><div class="stap-tx"><h4>QR-sticker bij het apparaat</h4><p>Wij leveren duurzame matte stickers. U plakt ze op het apparaat. Klaar.</p></div></div>
+    <div class="stap-rij in-fade"><div class="stap-bol">2</div><div class="stap-tx"><h4>Senior scant met de telefoon</h4><p>Gewone camera-app → link opent direct in de browser. Geen app nodig.</p></div></div>
+    <div class="stap-rij in-fade"><div class="stap-bol">3</div><div class="stap-tx"><h4>Video + instructies op het scherm</h4><p>In het Nederlands. Grote letters. Veiligheidstips. Hulpknop voor de instructeur.</p></div></div>
+  </div>
+  <div class="blok" style="margin-top:12px">
+    <div class="blok-lbl">Waarom dit nu nodig is</div>
+    <div class="stats">
+      <div class="stat in-fade"><div class="stat-n">53%</div><div class="stat-l">Eindhovense senioren voelt zich eenzaam</div></div>
+      <div class="stat in-fade"><div class="stat-n">27%</div><div class="stat-l">is kwetsbaar — hoog valrisico</div></div>
+      <div class="stat in-fade"><div class="stat-n">94%</div><div class="stat-l">van 65–75-jarigen gebruikt dagelijks internet</div></div>
+      <div class="stat in-fade"><div class="stat-n">€25K</div><div class="stat-l">kost één heupoperatie gemiddeld</div></div>
+    </div>
+  </div>
+  <div class="blok" style="margin-top:12px">
+    <div class="blok-lbl">QR-codes voor uw apparaten</div>
+    <div class="qr-grid" id="qr-grid"></div>
+    <button class="print-btn" onclick="showToast('QR-codes worden geopend om te printen...')">🖨️ &nbsp;QR-codes afdrukken</button>
+  </div>
+  <div class="prijs">
+    <h3>Wat kost het?</h3>
+    <div class="prijs-n">€300</div>
+    <div class="prijs-s">per maand · alles inbegrepen</div>
+    <div class="prijs-lst">
+      <div class="prijs-item"><div class="prijs-ck">✓</div>QR-stickers voor alle apparaten</div>
+      <div class="prijs-item"><div class="prijs-ck">✓</div>Instructievideo's in het Nederlands</div>
+      <div class="prijs-item"><div class="prijs-ck">✓</div>Grote tekst — senior-vriendelijk</div>
+      <div class="prijs-item"><div class="prijs-ck">✓</div>Veiligheidstips per apparaat</div>
+      <div class="prijs-item"><div class="prijs-ck">✓</div>Geen app-installatie nodig</div>
+      <div class="prijs-item"><div class="prijs-ck">✓</div>Maandelijks opzegbaar</div>
+    </div>
+  </div>
+  <button class="cta" onclick="showToast('👋 Wij nemen contact met u op!')">📞 &nbsp;Interesse? Neem contact op</button>
+</div>
+
+<!-- MACHINES -->
+<div class="pg uit" id="machines">
+  <div class="nav">
+    <button class="nav-back" onclick="ga('home')">←</button>
+    <div><div class="nav-logo">Fit met <span>pit</span></div><div class="nav-pg">Kies een apparaat</div></div>
+  </div>
+  <div class="m-hero">
+    <h2>Welkom in de sportschool</h2>
+    <p>Scan de QR-code bij een apparaat, of tik hieronder om te beginnen.</p>
+  </div>
+  <div class="m-grid" id="m-grid"></div>
+</div>
+
+<!-- DETAIL -->
+<div class="pg uit" id="detail">
+  <div class="nav">
+    <button class="nav-back" onclick="ga('machines')">←</button>
+    <div><div class="nav-logo">Fit met <span>pit</span></div><div class="nav-pg" id="d-pg-naam">Apparaat</div></div>
+  </div>
+  <div id="d-body"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════════════════════════
+   DATA
+═══════════════════════════════ */
+const MACHINES = [
+  {
+    id: 'beenpers',
+    icoon: '🦵',
+    naam: 'Beenpers',
+    spier: 'Benen & billen',
+    doel: 'Versterkt uw beenspieren. Goed voor uw balans en de preventie van vallen.',
+    video: { id: 'FNTd_mxtWmo', start: 45, duur: '2:30' },
+    stappen: [
+      'Ga rechtop zitten met uw rug volledig tegen de rugleuning.',
+      'Plaats uw voeten op het platform, op schouderbreedte.',
+      'Stel het gewicht in op een lichte stand — vraag de instructeur.',
+      'Duw het platform langzaam weg door uw knieën te strekken.',
+      'Buig uw knieën nooit verder dan een rechte hoek (90°).',
+      'Breng langzaam terug. Herhaal rustig 10 keer. Dan rust.'
+    ],
+    tips: [
+      { ico: '⚠️', t: 'Vergrendel uw knieën nooit helemaal — houd ze altijd licht gebogen.' },
+      { ico: '🫁', t: 'Adem uit bij het duwen, adem in bij het terugkomen.' },
+      { ico: '🛑', t: 'Pijn in uw knie of heup? Stop direct en roep de instructeur.' }
+    ]
+  },
+  {
+    id: 'kabelapparaat',
+    icoon: '🎯',
+    naam: 'Kabelapparaat',
+    spier: 'Heel lichaam',
+    doel: 'Traint meerdere spiergroepen tegelijk. Verbetert kracht en stabiliteit.',
+    video: null,
+    stappen: [
+      'Stel de kabelhouder in op de juiste hoogte voor uw oefening.',
+      'Kies een licht gewicht om te beginnen — vraag de instructeur.',
+      'Pak de greep stevig vast met beide handen.',
+      'Houd uw rug recht en buikspieren licht aangespannen.',
+      'Voer de beweging langzaam en volledig gecontroleerd uit.',
+      'Herhaal 10 keer. Zet daarna het gewicht gecontroleerd terug.'
+    ],
+    tips: [
+      { ico: '⚠️', t: 'Laat het gewicht nooit vallen — laat het altijd gecontroleerd zakken.' },
+      { ico: '🏋️', t: 'Vraag de instructeur welke oefening het beste bij U past.' },
+      { ico: '🛑', t: 'Scherpe pijn in uw gewrichten? Stop direct en vraag hulp.' }
+    ]
+  },
+  {
+    id: 'hometrainer',
+    icoon: '🚴',
+    naam: 'Hometrainer',
+    spier: 'Hart & conditie',
+    doel: 'Verbetert uw conditie. Zacht voor de knieën en gewrichten.',
+    video: null,
+    stappen: [
+      'Stap voorzichtig op de fiets en ga comfortabel zitten.',
+      'Stel het zadel zo in dat uw been bijna gestrekt is onderaan.',
+      'Stel de weerstand in op stand 1 of 2.',
+      'Begin rustig te fietsen — circa 60 slagen per minuut.',
+      'Fiets 10 tot 15 minuten op een comfortabel tempo.',
+      'Stop langzaam — stap pas af als de pedalen stilstaan.'
+    ],
+    tips: [
+      { ico: '💓', t: 'U mag licht buiten adem zijn, maar U moet nog normaal kunnen praten.' },
+      { ico: '⚠️', t: 'Duizeligheid of druk op de borst? Stop direct en roep hulp.' },
+      { ico: '💧', t: 'Drink voldoende water voor en na het fietsen.' }
+    ]
+  },
+  {
+    id: 'loopband',
+    icoon: '🏃',
+    naam: 'Loopband',
+    spier: 'Lopen & balans',
+    doel: 'Oefent uw loopbeweging veilig. Verbetert balans en uithouding.',
+    video: null,
+    stappen: [
+      'Stap op de band terwijl die stilstaat. Houd de handgrepen vast.',
+      'Druk op de groene START-knop. Stel in op 2–3 km/u.',
+      'Loop rechtop — kijk vooruit, niet naar uw voeten.',
+      'Houd de zijhandgrepen licht vast voor uw balans.',
+      'Wilt U stoppen? Druk op de grote rode STOP-knop.',
+      'Stap pas af als de band volledig stilstaat.'
+    ],
+    tips: [
+      { ico: '🔴', t: 'Clip de rode veiligheidshalsband aan uw kleding vóór U begint.' },
+      { ico: '⚠️', t: 'Begin nooit boven 4 km/u zonder begeleiding van de instructeur.' },
+      { ico: '🛑', t: 'Voelt U zich onzeker? Druk direct op de grote rode STOP-knop.' }
+    ]
+  },
+  {
+    id: 'roeiapparaat',
+    icoon: '🚣',
+    naam: 'Roeiapparaat',
+    spier: 'Rug & armen',
+    doel: 'Traint uw rugspieren en verbetert uw lichaamshouding.',
+    video: null,
+    stappen: [
+      'Ga rechtop zitten — voeten stevig op de voetsteunen.',
+      'Grijp de handvatten met beide handen, duimen naar boven.',
+      'Houd uw rug recht. Niet hol, niet gebogen.',
+      'Trek de handvatten rustig naar uw buik. Ellebogen langs uw lichaam.',
+      'Ga langzaam terug naar de startpositie.',
+      'Herhaal rustig 10 tot 12 keer.'
+    ],
+    tips: [
+      { ico: '⚠️', t: 'Gooi niet mee met uw bovenlichaam — dat belast uw onderrug.' },
+      { ico: '👣', t: 'Zorg dat uw voeten stevig op de steunen staan tijdens de hele oefening.' },
+      { ico: '🛑', t: 'Rugpijn? Stop direct en roep de instructeur.' }
+    ]
+  },
+  {
+    id: 'borstpers',
+    icoon: '💪',
+    naam: 'Borstpers',
+    spier: 'Borst & schouders',
+    doel: 'Versterkt borst en schouders. Helpt bij dagelijkse bewegingen.',
+    video: null,
+    stappen: [
+      'Stel de stoel in zodat de handvatten op borsthoogte zijn.',
+      'Ga rechtop zitten, rug volledig tegen de leuning.',
+      'Grijp de handvatten op schouderbreedte.',
+      'Duw langzaam vooruit tot uw armen bijna gestrekt zijn.',
+      'Breng rustig terug naar de startpositie.',
+      'Herhaal 10 keer — rustig en gecontroleerd.'
+    ],
+    tips: [
+      { ico: '⚠️', t: 'Strek uw ellebogen nooit helemaal — houd altijd een kleine bocht.' },
+      { ico: '🦴', t: 'Schouderklachten? Vraag de instructeur om een aangepaste oefening.' },
+      { ico: '🫁', t: 'Adem altijd rustig door — pers nooit met ingehouden adem.' }
+    ]
+  }
+];
+
+const BASE = 'https://fitmetpit.nl/gym';
+let huidigeMachine = null;
+
+/* ═══════════════════════════════
+   NAVIGATIE
+═══════════════════════════════ */
+function ga(id, data) {
+  document.querySelectorAll('.pg').forEach(p => { p.classList.remove('in'); p.classList.add('uit'); });
+  const el = document.getElementById(id);
+  el.classList.remove('uit');
+  el.classList.add('in');
+  el.scrollTop = 0;
+  if (id === 'eigenaar') bouwQR();
+  if (id === 'machines') bouwMachines();
+  if (id === 'detail' && data) { huidigeMachine = data; bouwDetail(data); }
+}
+
+/* ═══════════════════════════════
+   QR CODES
+═══════════════════════════════ */
+function bouwQR() {
+  const g = document.getElementById('qr-grid');
+  if (g.children.length) return;
+  MACHINES.forEach(m => {
+    const k = document.createElement('div');
+    k.className = 'qr-k';
+    k.innerHTML = `<div class="qr-k-ico">${m.icoon}</div><div id="qr-${m.id}"></div><div class="qr-naam">${m.naam}</div><div class="qr-url">${BASE}/${m.id}</div>`;
+    k.onclick = () => showToast(`QR-code ${m.naam} klaar`);
+    g.appendChild(k);
+    setTimeout(() => {
+      new QRCode(document.getElementById('qr-' + m.id), {
+        text: BASE + '/' + m.id,
+        width: 100, height: 100,
+        colorDark: '#1A237E', colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }, 100);
+  });
+}
+
+/* ═══════════════════════════════
+   MACHINES GRID
+═══════════════════════════════ */
+function bouwMachines() {
+  const g = document.getElementById('m-grid');
+  g.innerHTML = '';
+  MACHINES.forEach((m, i) => {
+    const k = document.createElement('div');
+    k.className = 'in-fade m-kaart';
+    k.style.animationDelay = (i * .07) + 's';
+    k.innerHTML = `<div class="m-ico">${m.icoon}</div><div class="m-naam">${m.naam}</div><div class="m-spier">${m.spier}</div><div class="m-scan">⬛ QR scannen</div>`;
+    k.onclick = () => ga('detail', m);
+    g.appendChild(k);
+  });
+}
+
+/* ═══════════════════════════════
+   DETAIL PAGINA
+═══════════════════════════════ */
+function bouwDetail(m) {
+  document.getElementById('d-pg-naam').textContent = m.naam;
+
+  // Video sectie
+  let videoHTML = '';
+  if (m.video) {
+    const thumb = `https://img.youtube.com/vi/${m.video.id}/hqdefault.jpg`;
+    videoHTML = `
+      <div class="v-blok">
+        <div class="v-lbl">▶ Instructievideo</div>
+        <div class="yt-thumb" id="yt-player" onclick="speelVideo()">
+          <img src="${thumb}" alt="Video beenpers" loading="lazy">
+          <div class="yt-overlay">
+            <div class="yt-play"><div class="yt-play-ico">▶</div></div>
+            <div class="yt-play-label">Tik om de video te starten</div>
+          </div>
+          <div class="yt-dur">${m.video.duur}</div>
+        </div>
+        <div class="v-footer"><div class="v-footer-t">🎬 &nbsp;Voorbeeldvideo — eigen instructeur komt hier</div></div>
+      </div>`;
+  } else {
+    videoHTML = `
+      <div class="v-blok">
+        <div class="v-lbl">▶ Instructievideo</div>
+        <div style="background:#0d0d1a;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px">
+          <div style="font-size:48px">${m.icoon}</div>
+          <div style="color:rgba(255,255,255,.65);font-size:15px;font-weight:500;text-align:center;line-height:1.6">Eigen instructievideo<br>van uw sportschool komt hier</div>
+        </div>
+        <div class="v-footer"><div class="v-footer-t">🎓 &nbsp;Wij filmen samen met u in uw sportschool</div></div>
+      </div>`;
+  }
+
+  const stappen = m.stappen.map((s, i) =>
+    `<div class="stap"><div class="stap-nr">${i+1}</div><div class="stap-t">${s}</div></div>`
+  ).join('');
+
+  const tips = m.tips.map(t =>
+    `<div class="tip"><div class="tip-ico">${t.ico}</div><div class="tip-t">${t.t}</div></div>`
+  ).join('');
+
+  document.getElementById('d-body').innerHTML = `
+    <div class="d-hero">
+      <div class="d-ico">${m.icoon}</div>
+      <div class="d-naam">${m.naam}</div>
+      <div class="d-doel">${m.doel}</div>
+      <div class="d-badge">✅ RIVM-erkende oefeningen</div>
+    </div>
+    ${videoHTML}
+    <div class="d-blok">
+      <div class="d-lbl">📋 Stap voor stap</div>
+      ${stappen}
+    </div>
+    <div class="d-blok">
+      <div class="d-lbl">⚠️ Veiligheidstips</div>
+      ${tips}
+    </div>
+    <button class="hulp" onclick="showToast('✅ Instructeur geroepen — kom eraan!')">
+      🙋 Ik wil graag hulp van de instructeur
+    </button>`;
+}
+
+/* ═══════════════════════════════
+   VIDEO AFSPELEN
+═══════════════════════════════ */
+function speelVideo() {
+  if (!huidigeMachine || !huidigeMachine.video) return;
+  const v = huidigeMachine.video;
+  const container = document.getElementById('yt-player');
+  if (!container) return;
+  // Vervang thumbnail door echte iframe
+  container.outerHTML = `
+    <div class="yt-frame">
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/${v.id}?start=${v.start}&autoplay=1&rel=0&modestbranding=1&playsinline=1"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>`;
+}
+
+/* ═══════════════════════════════
+   TOAST
+═══════════════════════════════ */
+function showToast(t) {
+  const el = document.getElementById('toast');
+  el.textContent = t;
+  el.classList.add('aan');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(() => el.classList.remove('aan'), 3000);
+}
+
+/* ═══════════════════════════════
+   SPLASH
+═══════════════════════════════ */
+window.addEventListener('load', () => setTimeout(() => ga('home'), 2000));
+</script>
+</body>
+</html>

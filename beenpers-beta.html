@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fit met Pit — Beenpers</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ═══════════════════════════════════════
+   DESIGN SYSTEEM — 8pt grid
+   Contrast ratios:
+   --tekst  #1A1A1A op wit:  18.1:1  ✓ AAA
+   --mid    #3D3D3D op wit:  10.7:1  ✓ AAA
+   --sub    #595959 op wit:   7.0:1  ✓ AAA
+   --actie  #0057B8 op wit:   7.2:1  ✓ AAA (nooit naast oranje/rood)
+   --oranje #C45000 op wit:   4.6:1  ✓ AA  (nooit naast blauw)
+═══════════════════════════════════════ */
+:root {
+  /* Kleuren */
+  --wit:      #FFFFFF;
+  --bg:       #F5F6F8;
+  --bg2:      #ECEEF2;
+  --tekst:    #1A1A1A;
+  --mid:      #3D3D3D;
+  --sub:      #595959;
+  --lijn:     #D8DBE4;
+
+  /* Accentkleur — uitsluitend voor primaire actie */
+  --actie:    #0057B8;
+  --actie2:   #004A9E;
+
+  /* Oranje — uitsluitend voor labels/badges, NOOIT naast blauw */
+  --label:    #C45000;
+  --label-bg: #FFF0E6;
+
+  /* Succes */
+  --groen:    #1B5E20;
+  --groen-bg: #E8F5E9;
+
+  /* Typografie */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
+
+  /* Spacing — 8pt grid */
+  --s1: 8px;
+  --s2: 16px;
+  --s3: 24px;
+  --s4: 32px;
+  --s5: 40px;
+  --s6: 48px;
+
+  /* Radius */
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 24px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior:smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--tekst);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══ NAVIGATIE ═══ */
+.nav {
+  background: var(--wit);
+  border-bottom: 1px solid var(--lijn);
+  padding: var(--s2) var(--s3);
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 12px rgba(0,0,0,.06);
+}
+
+.nav-terug {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg);
+  border: 1.5px solid var(--lijn);
+  border-radius: var(--r-sm);
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--mid);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background .18s, border-color .18s;
+  /* Minimaal 48px tap-target */
+  min-height: 48px;
+}
+.nav-terug:active { background: var(--bg2); border-color: var(--sub); }
+.nav-terug-pijl { font-size: 18px; }
+.nav-terug-tekst { font-size: 16px; }
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--actie);
+  line-height: 1;
+}
+.nav-logo span { color: var(--label); }
+.nav-sub {
+  font-size: 13px;
+  color: var(--sub);
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+/* ═══ HERO ═══ */
+.hero {
+  background: var(--actie);
+  padding: var(--s5) var(--s3) var(--s6);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtiele textuur */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 80% 0%, rgba(255,255,255,.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 100%, rgba(0,0,0,.15) 0%, transparent 50%);
+}
+
+/* Decoratief element */
+.hero::after {
+  content: '';
+  position: absolute;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  border: 40px solid rgba(255,255,255,.06);
+  bottom: -80px; right: -60px;
+}
+
+.hero-content { position: relative; }
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 30px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,.9);
+  margin-bottom: var(--s3);
+  letter-spacing: .02em;
+}
+
+.hero-icoon { font-size: 56px; margin-bottom: var(--s2); display: block; }
+
+.hero-naam {
+  font-family: var(--font-display);
+  color: var(--wit);
+  font-size: 40px;
+  line-height: 1.08;
+  font-weight: 900;
+  margin-bottom: var(--s2);
+}
+
+.hero-doel {
+  color: rgba(255,255,255,.85);
+  font-size: 18px;
+  line-height: 1.6;
+  font-weight: 400;
+  max-width: 340px;
+}
+
+/* ═══ VIDEO SECTIE ═══ */
+.sectie {
+  background: var(--wit);
+  margin: var(--s3) var(--s3) 0;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(0,0,0,.06);
+}
+
+.sectie-header {
+  padding: var(--s3) var(--s3) var(--s2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--bg);
+}
+
+.sectie-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--label);
+}
+
+.sectie-titel {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--tekst);
+}
+
+/* Video */
+.video-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #0a0a14;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.video-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .4s ease, opacity .3s;
+}
+.video-container:active .video-thumb { transform: scale(1.02); opacity: .9; }
+
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,.5) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+}
+
+.video-play-knop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--actie);
+  color: var(--wit);
+  border-radius: 50px;
+  padding: 14px 28px;
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 700;
+  box-shadow: 0 4px 24px rgba(0,87,184,.5);
+  animation: puls 2.2s ease infinite;
+  transition: transform .18s;
+}
+.video-container:active .video-play-knop { transform: scale(.95); }
+
+@keyframes puls {
+  0%   { box-shadow: 0 4px 24px rgba(0,87,184,.5), 0 0 0 0 rgba(0,87,184,.35); }
+  60%  { box-shadow: 0 4px 24px rgba(0,87,184,.5), 0 0 0 18px rgba(0,87,184,0); }
+  100% { box-shadow: 0 4px 24px rgba(0,87,184,.5), 0 0 0 0 rgba(0,87,184,0); }
+}
+
+.video-duur {
+  position: absolute;
+  bottom: 12px; right: 14px;
+  background: rgba(0,0,0,.72);
+  color: var(--wit);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 6px;
+  letter-spacing: .02em;
+}
+
+.video-yt-frame {
+  position: relative; width: 100%; aspect-ratio: 16/9; background: #000;
+}
+.video-yt-frame iframe {
+  position: absolute; inset: 0; width: 100%; height: 100%; border: none;
+}
+
+.video-footer {
+  padding: var(--s2) var(--s3);
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.video-footer-tekst {
+  font-size: 14px;
+  color: var(--sub);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* ═══ STAPPEN ═══ */
+.stappen-lijst {
+  padding: var(--s3);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.stap {
+  display: flex;
+  gap: var(--s2);
+  align-items: flex-start;
+  padding: var(--s2) 0;
+  border-bottom: 1px solid var(--bg);
+  position: relative;
+}
+.stap:last-child { border-bottom: none; padding-bottom: 0; }
+.stap:first-child { padding-top: 0; }
+
+/* Verbindingslijn tussen stappen */
+.stap:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 21px;
+  top: 52px;
+  bottom: -1px;
+  width: 2px;
+  background: var(--bg2);
+}
+
+.stap-nr {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--actie);
+  color: var(--wit);
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,87,184,.3);
+  position: relative;
+  z-index: 1;
+}
+
+.stap-tekst {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--tekst);
+  padding-top: 10px;
+  font-weight: 400;
+}
+
+/* ═══ VEILIGHEIDSTIPS ═══ */
+.tips-lijst {
+  padding: var(--s3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+}
+
+.tip {
+  display: flex;
+  gap: var(--s2);
+  align-items: flex-start;
+  background: var(--bg);
+  border-radius: var(--r-md);
+  padding: var(--s2);
+  border-left: 4px solid var(--label);
+}
+
+.tip-ico { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+.tip-tekst {
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--tekst);
+  font-weight: 400;
+}
+
+/* ═══ HULPKNOP ═══ */
+.hulp-sectie {
+  margin: var(--s3) var(--s3) var(--s5);
+}
+
+.hulp-knop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  background: var(--actie);
+  color: var(--wit);
+  border: none;
+  border-radius: var(--r-md);
+  padding: 0 var(--s3);
+  height: 64px; /* ruim boven 48px minimum */
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0,87,184,.3);
+  transition: background .18s, transform .18s, box-shadow .18s;
+  letter-spacing: .01em;
+}
+.hulp-knop:active {
+  background: var(--actie2);
+  transform: scale(.98);
+  box-shadow: 0 2px 10px rgba(0,87,184,.2);
+}
+
+/* ═══ MODAAL — VOLLEDIGE SCHERM BEVESTIGING ═══ */
+.modaal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease;
+  backdrop-filter: blur(4px);
+}
+.modaal-bg.aan { opacity: 1; pointer-events: all; }
+
+.modaal-kaart {
+  background: var(--wit);
+  border-radius: var(--r-lg);
+  width: 100%;
+  max-width: 380px;
+  overflow: hidden;
+  transform: translateY(20px) scale(.97);
+  transition: transform .3s ease;
+  box-shadow: 0 24px 64px rgba(0,0,0,.3);
+}
+.modaal-bg.aan .modaal-kaart { transform: none; }
+
+.modaal-top {
+  background: var(--groen);
+  padding: var(--s5) var(--s3) var(--s4);
+  text-align: center;
+}
+.modaal-vinkje {
+  width: 72px; height: 72px;
+  background: rgba(255,255,255,.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  margin: 0 auto var(--s3);
+}
+.modaal-titel {
+  font-family: var(--font-display);
+  color: var(--wit);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.modaal-sub {
+  color: rgba(255,255,255,.85);
+  font-size: 17px;
+  margin-top: var(--s1);
+  line-height: 1.5;
+}
+
+.modaal-body {
+  padding: var(--s3);
+}
+.modaal-info {
+  background: var(--groen-bg);
+  border-radius: var(--r-sm);
+  padding: var(--s2);
+  font-size: 16px;
+  color: var(--groen);
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: var(--s3);
+}
+
+.modaal-sluit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  border: 2px solid var(--lijn);
+  border-radius: var(--r-md);
+  padding: 0 var(--s3);
+  height: 56px;
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--mid);
+  cursor: pointer;
+  width: 100%;
+  transition: background .18s, border-color .18s;
+}
+.modaal-sluit:active { background: var(--bg2); border-color: var(--sub); }
+
+/* ═══ FADE IN ANIMATIES ═══ */
+@keyframes omhoog {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:none; }
+}
+
+.hero         { animation: omhoog .5s ease both; }
+.sectie       { animation: omhoog .5s ease both; }
+.sectie:nth-child(2) { animation-delay: .08s; }
+.sectie:nth-child(3) { animation-delay: .16s; }
+.sectie:nth-child(4) { animation-delay: .24s; }
+.hulp-sectie  { animation: omhoog .5s .32s ease both; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (min-width: 480px) {
+  .hero { padding: var(--s6) var(--s5) 56px; }
+  .sectie { margin: var(--s3) var(--s4) 0; }
+  .hulp-sectie { margin: var(--s3) var(--s4) var(--s5); }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATIE -->
+<nav class="nav">
+  <button class="nav-terug" onclick="history.back()">
+    <span class="nav-terug-pijl">←</span>
+    <span class="nav-terug-tekst">Terug</span>
+  </button>
+  <div>
+    <div class="nav-logo">Fit met <span>pit</span></div>
+    <div class="nav-sub">Gymgids voor senioren</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">✅ RIVM-erkende oefeningen</div>
+    <span class="hero-icoon">🦵</span>
+    <h1 class="hero-naam">Beenpers</h1>
+    <p class="hero-doel">Versterkt uw beenspieren. Goed voor uw balans en de preventie van vallen.</p>
+  </div>
+</div>
+
+<!-- VIDEO -->
+<div class="sectie">
+  <div class="sectie-header">
+    <div class="sectie-label">▶ Instructievideo</div>
+  </div>
+  <div class="video-container" id="video-container" onclick="speelVideo()">
+    <img
+      class="video-thumb"
+      src="https://img.youtube.com/vi/FNTd_mxtWmo/hqdefault.jpg"
+      alt="Instructievideo beenpers"
+      loading="eager">
+    <div class="video-overlay">
+      <div class="video-play-knop">
+        <span>▶</span>
+        <span>Afspelen</span>
+      </div>
+    </div>
+    <div class="video-duur">2:30</div>
+  </div>
+  <div class="video-footer">
+    <span>🎬</span>
+    <span class="video-footer-tekst">Voorbeeldvideo — eigen instructeur van uw sportschool komt hier</span>
+  </div>
+</div>
+
+<!-- STAP VOOR STAP -->
+<div class="sectie">
+  <div class="sectie-header">
+    <div class="sectie-label">📋 Stap voor stap</div>
+  </div>
+  <div class="stappen-lijst">
+    <div class="stap">
+      <div class="stap-nr">1</div>
+      <div class="stap-tekst">Ga rechtop zitten met uw rug volledig tegen de rugleuning.</div>
+    </div>
+    <div class="stap">
+      <div class="stap-nr">2</div>
+      <div class="stap-tekst">Plaats uw voeten op het platform, op schouderbreedte.</div>
+    </div>
+    <div class="stap">
+      <div class="stap-nr">3</div>
+      <div class="stap-tekst">Stel het gewicht in op een lichte stand — vraag de instructeur.</div>
+    </div>
+    <div class="stap">
+      <div class="stap-nr">4</div>
+      <div class="stap-tekst">Duw het platform langzaam weg door uw knieën te strekken.</div>
+    </div>
+    <div class="stap">
+      <div class="stap-nr">5</div>
+      <div class="stap-tekst">Buig uw knieën nooit verder dan een rechte hoek (90°).</div>
+    </div>
+    <div class="stap">
+      <div class="stap-nr">6</div>
+      <div class="stap-tekst">Breng langzaam terug. Herhaal rustig 10 keer. Dan rust.</div>
+    </div>
+  </div>
+</div>
+
+<!-- VEILIGHEIDSTIPS -->
+<div class="sectie">
+  <div class="sectie-header">
+    <div class="sectie-label">⚠️ Veiligheidstips</div>
+  </div>
+  <div class="tips-lijst">
+    <div class="tip">
+      <div class="tip-ico">⚠️</div>
+      <div class="tip-tekst">Vergrendel uw knieën nooit helemaal — houd ze altijd licht gebogen.</div>
+    </div>
+    <div class="tip">
+      <div class="tip-ico">🫁</div>
+      <div class="tip-tekst">Adem uit bij het duwen, adem in bij het terugkomen.</div>
+    </div>
+    <div class="tip">
+      <div class="tip-ico">🛑</div>
+      <div class="tip-tekst">Pijn in uw knie of heup? Stop direct en roep de instructeur.</div>
+    </div>
+  </div>
+</div>
+
+<!-- HULPKNOP -->
+<div class="hulp-sectie">
+  <button class="hulp-knop" onclick="roepHulp()">
+    🙋 Ik wil graag hulp van de instructeur
+  </button>
+</div>
+
+<!-- MODAAL BEVESTIGING -->
+<div class="modaal-bg" id="modaal" onclick="sluitModaal(event)">
+  <div class="modaal-kaart">
+    <div class="modaal-top">
+      <div class="modaal-vinkje">✅</div>
+      <div class="modaal-titel">De instructeur is gewaarschuwd!</div>
+      <div class="modaal-sub">Hij of zij komt zo snel mogelijk naar u toe.</div>
+    </div>
+    <div class="modaal-body">
+      <div class="modaal-info">
+        🕐 &nbsp;Blijf rustig zitten bij het apparaat.<br>De instructeur komt eraan.
+      </div>
+      <button class="modaal-sluit" onclick="sluitModaal()">
+        ← Terug naar de oefening
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+function speelVideo() {
+  const c = document.getElementById('video-container');
+  c.outerHTML = `
+    <div class="video-yt-frame">
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/FNTd_mxtWmo?start=60&autoplay=1&mute=0&rel=0&modestbranding=1&playsinline=1"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>`;
+}
+
+function roepHulp() {
+  document.getElementById('modaal').classList.add('aan');
+  // Scroll naar boven zodat modaal volledig zichtbaar is
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function sluitModaal(e) {
+  if (!e || e.target === document.getElementById('modaal') || e.currentTarget === document.querySelector('.modaal-sluit')) {
+    document.getElementById('modaal').classList.remove('aan');
+  }
+}
+</script>
+</body>
+</html>
