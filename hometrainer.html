@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fit met Pit — Hometrainer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/fitmetpit.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-terug" href="index.html">
+    <span class="nav-terug-pijl">←</span>
+    <span>Terug</span>
+  </a>
+  <div>
+    <div class="nav-logo">Fit met <span>pit</span></div>
+    <div class="nav-sub">Gymgids voor senioren</div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">✅ RIVM-erkende oefeningen</div>
+    <span class="hero-icoon">🚴</span>
+    <h1 class="hero-naam">Hometrainer</h1>
+    <p class="hero-doel">Verbetert uw conditie en hart. Gewrichtsvriendelijk — geen druk op uw knieën.</p>
+  </div>
+</div>
+
+<div class="sectie">
+  <div class="sectie-header">
+    <div class="sectie-label">▶ Instructievideo</div>
+  </div>
+  <div class="video-container" id="video-container" onclick="speelVideo('9S93HXzlv8s', 0)">
+    <img class="video-thumb" src="https://img.youtube.com/vi/9S93HXzlv8s/hqdefault.jpg" alt="Instructievideo hometrainer" loading="eager">
+    <div class="video-overlay">
+      <div class="video-play-knop">
+        <span>▶</span>
+        <span>Afspelen</span>
+      </div>
+    </div>
+    <div class="video-duur">2:00</div>
+  </div>
+  <div class="video-footer">
+    <span>🎬</span>
+    <span class="video-footer-tekst">Voorbeeldvideo — eigen instructeur van uw sportschool komt hier</span>
+  </div>
+</div>
+
+<div class="sectie">
+  <div class="sectie-header">
+    <div class="sectie-label">📋 Stap voor stap</div>
+  </div>
+  <div class="stappen-lijst">
+    <div class="stap"><div class="stap-nr">1</div><div class="stap-tekst">Stap voorzichtig op de hometrainer en ga rechtop zitten.</div></div>
+    <div class="stap"><div class="stap-nr">2</div><div class="stap-tekst">Stel het zadel in zodat uw been bijna gestrekt is op het laagste punt van de pedaal.</div></div>
+    <div class="stap"><div class="stap-nr">3</div><div class="stap-tekst">Stel de weerstand in op een lichte stand — vraag de instructeur om hulp.</div></div>
+    <div class="stap"><div class="stap-nr">4</div><div class="stap-tekst">Begin rustig te trappen in een gelijkmatig ritme.</div></div>
+    <div class="stap"><div class="stap-nr">5</div><div class="stap-tekst">Houd uw schouders ontspannen en pak het stuur licht vast.</div></div>
+    <div class="stap"><div class="stap-nr">6</div><div class="stap-tekst">Trap 10 tot 15 minuten rustig. Stop bij duizeligheid of pijn.</div></div>
+  </div>
+</div>
+
+<div class="sectie">
+  <div class="sectie-header">
+    <div class="sectie-label">⚠️ Veiligheidstips</div>
+  </div>
+  <div class="tips-lijst">
+    <div class="tip"><div class="tip-ico">⚠️</div><div class="tip-tekst">Stap nooit van een draaiende pedaal — wacht tot het stilstaat.</div></div>
+    <div class="tip"><div class="tip-ico">🫀</div><div class="tip-tekst">Trap niet te snel: een rustig ritme is beter voor uw hart.</div></div>
+    <div class="tip"><div class="tip-ico">🛑</div><div class="tip-tekst">Duizeligheid of kortademigheid? Stop direct en roep de instructeur.</div></div>
+  </div>
+</div>
+
+<div class="hulp-sectie">
+  <button class="hulp-knop" onclick="roepHulp()">🙋 Ik wil graag hulp van de instructeur</button>
+</div>
+
+<div class="modaal-bg" id="modaal" onclick="sluitModaal(event)">
+  <div class="modaal-kaart">
+    <div class="modaal-top">
+      <div class="modaal-vinkje">✅</div>
+      <div class="modaal-titel">De instructeur is gewaarschuwd!</div>
+      <div class="modaal-sub">Hij of zij komt zo snel mogelijk naar U toe.</div>
+    </div>
+    <div class="modaal-body">
+      <div class="modaal-info">🕐 &nbsp;Blijf rustig zitten op de hometrainer.<br>De instructeur komt eraan.</div>
+      <button class="modaal-sluit" onclick="sluitModaal(event)">← Terug naar de oefening</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/fitmetpit.js"></script>
+</body>
+</html>
