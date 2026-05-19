@@ -3,7 +3,7 @@
 function speelVideo(videoId, startSec) {
   const c = document.getElementById('video-container');
   if (!c) return;
-  const sec = startSec || 60;
+  const sec = (startSec != null) ? startSec : 0;
   c.outerHTML = `
     <div class="video-yt-frame">
       <iframe
